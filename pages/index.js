@@ -57,7 +57,8 @@ export default function Home() {
               <div className="mt-8">
                 <Pagination />
               </div>
-              <Configure hitsPerPage={3}
+              <Configure hitsPerPage={20}
+
               />
             </InstantSearch>
           </div>

@@ -42,7 +42,7 @@ const Hit = ({ hit }) => {
         <div className="text-lg font-semibold ">{hit.FullName}</div>
         <hr className="my-4" />
         <div className="text-gray-500 mb-2">{hit.CompanyName}</div>
-        <p className="text-sm text-blue-600 break-all">{hit.Email}</p>
+        {/* <p className="text-sm text-blue-600 break-all">{hit.Email}</p> */}
         <button
           className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow mt-2"
           onClick={handleCheckIn}
