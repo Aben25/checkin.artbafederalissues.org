@@ -8,3 +8,60 @@
   margin-bottom: 16px;
   flex: 1 0 100%;
 }
+
+.ais-SearchBox-input {
+  width: 90%;
+  padding: 1em;
+  font-size: 1.5em;
+}
+.ais-SearchBox {
+  margin:  0;
+  border: 5px solid #ccc;
+}
+.ais-InstantSearch {
+  max-width: 960px;
+  overflow: hidden;
+  margin: 0 auto;
+}
+.ais-SearchBox-submitIcon
+{
+  font-size: 1.5em;
+  padding: 0;
+}
+
+.ais-SearchBox-submit
+{
+  padding: 10 !important;
+  margin: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.search-container {
+  position: relative;
+}
+
+.search-icon-button {
+  background-color: transparent;
+  border: none;
+  position: absolute;
+  right: 0;
+  top: 0;
+  cursor: pointer;
+}
+
+.search-icon-button i {
+  font-size: 1rem;
+  color: #1a202c;
+}
+
+.flex {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start; /* Align items to the left */
+}
+.hit {
+  max-width: 100%;
+  box-sizing: border-box;
+}

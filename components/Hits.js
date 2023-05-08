@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import { Hits } from 'react-instantsearch-dom';
-import Link from 'next/link';
+import { useState } from "react";
+import { Hits } from "react-instantsearch-dom";
+import Link from "next/link";
 
 const Hit = ({ hit }) => {
   const [showPopup, setShowPopup] = useState(false);
@@ -13,22 +13,21 @@ const Hit = ({ hit }) => {
     const response = await fetch(
       `https://connect.artba.org/api/attendees/${hit.AttendeeUniqueID}/mark-attended`,
       {
-        method: 'POST',
+        method: "POST",
         headers: {
-          Authorization: 'Basic d2SuLwamTRQfEWqAuwBQ4zSTiSlq34mrICTaMeAIPS4=',
-          'Content-Type': 'application/json',
+          Authorization: "Basic d2SuLwamTRQfEWqAuwBQ4zSTiSlq34mrICTaMeAIPS4=",
+          "Content-Type": "application/json",
         },
       }
     );
 
     if (response.ok) {
-      alert('Successfully checked in.');
+      alert("Successfully checked in.");
     } else {
-      alert('Error checking in. Please try again.');
+      alert("Error checking in. Please try again.");
     }
     setShowPopup(false);
   };
-
 
   const handleCancel = () => {
     setShowPopup(false);
@@ -38,17 +37,18 @@ const Hit = ({ hit }) => {
 
   return (
     <>
-      <div className='w-full'>
-        <div className="text-lg font-semibold ">{hit.FullName}</div>
-        <hr className="my-4" />
-        <div className="text-gray-500 mb-2">{hit.CompanyName}</div>
-        {/* <p className="text-sm text-blue-600 break-all">{hit.Email}</p> */}
-        <button
-          className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow mt-2"
-          onClick={handleCheckIn}
-        >
-          Check-in
-        </button>
+      <div className="max-w-sm rounded overflow-hidden shadow-lg mb-4">
+        <div className="px-6 py-4">
+          <div className="font-bold text-xl mb-2">{hit.FullName}</div>
+          <hr className="my-4" />
+          <p className="text-gray-500 text-base mb-2">{hit.CompanyName}</p>
+          <button
+            className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow mt-2"
+            onClick={handleCheckIn}
+          >
+            Check-in
+          </button>
+        </div>
       </div>
 
       {showPopup && (
@@ -108,8 +108,11 @@ const Hit = ({ hit }) => {
 };
 
 const CustomHits = () => {
-  return <Hits hitComponent={Hit} />;
+  return (
+    <div className="hit">
+      <Hits hitComponent={Hit} />  
+    </div>
+  );
 };
 
 export default CustomHits;
-
