@@ -7,6 +7,7 @@ import {
   Configure,
   RefinementList,
   InfiniteHits,
+  connectStateResults,
 } from "react-instantsearch-dom";
 import "instantsearch.css/themes/reset.css";
 import "tailwindcss/tailwind.css";
@@ -18,16 +19,16 @@ const searchClient = algoliasearch(
   "286c1017af1002e899ded37866d02198"
 );
 
-const LoadMoreButton = ({ refine }) => {
-  return (
-    <button
-      className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-      onClick={() => refine()}
-    >
-      Load more
-    </button>
-  );
-};
+const Results = connectStateResults(
+  ({ searchState, searchResults, children }) => {
+    if (searchResults && searchResults.nbHits === 0) {
+      return <div>No results found for "{searchState.query}"</div>;
+    } else {
+      return children;
+    }
+  }
+);
+
 export default function Home() {
   const router = useRouter();
 
@@ -45,6 +46,10 @@ export default function Home() {
       <Head>
         <title>Registration Check-In</title>
         <link rel="shortcut icon" href="/favicon.ico" />
+        <link
+          rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css"
+        />
       </Head>
 
       <main>
@@ -72,13 +77,15 @@ export default function Home() {
                   />
                 </div>
                 <div className="">
-                  <div >
-                    <InfiniteHits
-                      hitComponent={CustomHits}
-                      translations={{
-                        loadMore: "Load more",
-                      }}
-                    />
+                  <div>
+                    <Results>
+                      <InfiniteHits
+                        hitComponent={CustomHits}
+                        translations={{
+                          loadMore: "Load more",
+                        }}
+                      />
+                    </Results>
                   </div>
                 </div>
               </div>

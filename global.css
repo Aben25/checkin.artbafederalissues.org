@@ -10,7 +10,7 @@
 }
 
 .ais-SearchBox-input {
-  width: 90%;
+  width: 100%;
   padding: 1em;
   font-size: 1.5em;
 }
@@ -23,19 +23,22 @@
   overflow: hidden;
   margin: 0 auto;
 }
-.ais-SearchBox-submitIcon
-{
-  font-size: 1.5em;
-  padding: 0;
-}
 
-.ais-SearchBox-submit
-{
-  padding: 10 !important;
-  margin: 0;
-  border: 0;
-  background: transparent;
-  cursor: pointer;
+
+/* center and enlarge search icon */
+.ais-SearchBox-submitIcon {
+  position: relative;
+  left: 1em;
+  font-size: 1.25em;
+  /* add a new icon */
+  content: "\f002";
+  font-family: FontAwesome;
+  font-style: normal;
+  font-weight: normal;
+  text-decoration: inherit;
+  /* color the icon */
+  color: #ccc;
+  /* position the icon */
 }
 
 .search-container {
@@ -133,4 +136,14 @@ padding-left: 0.5em;
   padding: 0;
   width: 100%;
   list-style-type: none;
+}
+
+.ais-SearchBox-submit
+{
+  display: none;
+}
+
+.ais-SearchBox-reset
+{
+  display: none;
 }
