@@ -1,0 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;npx tailwindcss -i ./src/input.css -o ./dist/output.css --watch
+.hit-container {
+  padding: 8px;
+  border: 1px solid #e2e8f0;
+  border-radius: 4px;
+  margin-bottom: 16px;
+  flex: 1 0 100%;
+}
