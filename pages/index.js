@@ -22,10 +22,12 @@ export default function Home() {
   const router = useRouter();
 
   return (
-    <div className="min-h-screen bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gray-100 py-12 px-4 sm:px-6 lg:px-8 mb-0">
       <Head>
         <title>Attendance Check-in</title>
-        <link rel="icon" href="/favicon.ico" />
+          <link rel="shortcut icon" href="/favicon.ico" />
+
+
       </Head>
 
       <main>
@@ -57,7 +59,7 @@ export default function Home() {
               <div className="mt-8">
                 <Pagination />
               </div>
-              <Configure hitsPerPage={20}
+              <Configure 
 
               />
             </InstantSearch>
