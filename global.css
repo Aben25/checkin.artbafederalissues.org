@@ -65,3 +65,72 @@
   max-width: 100%;
   box-sizing: border-box;
 }
+.ais-RefinementList-count
+{
+  font-size: 0.7em;
+  padding: 0.2em;
+  color: rgb(251, 251, 251);
+  border-radius: 4px;
+
+  background-color: #28628c64;
+}
+.ais-RefinementList-item
+{
+  margin: 0.2em;
+  padding: 0.2em;
+  border-radius: 4px;
+  background-color: #28628c21;
+}
+.ais-RefinementList-item--selected
+{
+  background-color: #28628c86;
+}
+.ais-RefinementList-labelText
+{
+  font-size: 1em;
+  padding: 0.2em;
+  color: rgb(175, 49, 49);
+  border-radius: 4px;
+}
+.ais-RefinementList-labelText--selected
+{
+  color: rgb(157, 28, 28);
+}
+.ais-RefinementList-checkbox
+{
+padding-left: 0.5em;
+
+}
+
+.ais-InfiniteHits-loadMore
+{
+  margin: 0.5em;
+  padding: 0.5em;
+  border-radius: 4px;
+  background-color: #2392e0ea;
+  color: #28628c;
+  border: 1px solid #28628c;
+}
+.ais-InfiniteHits-loadMore:hover
+{
+  background-color: #28628c86;
+  color: #28628c;
+  border: 1px solid #28628c;
+}
+.ais-InfiniteHits-list
+{
+  float: left;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+
+
+}
+.ais-InfiniteHits-item
+{
+  float: left;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  list-style-type: none;
+}
