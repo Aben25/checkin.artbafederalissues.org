@@ -57,9 +57,18 @@ export default function Home() {
 
 
               <div className="mt-8">
-                <Pagination />
+                <Pagination
+                  showFirst={false}
+
+                  showLast={false}
+
+                
+                />
               </div>
               <Configure 
+                hitsPerPage={10}
+                attributesToSnippet={["CompanyName:10"]}
+                snippetEllipsisText={"..."}
 
               />
             </InstantSearch>
