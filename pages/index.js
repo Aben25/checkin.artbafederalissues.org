@@ -7,13 +7,12 @@ import {
   Pagination,
   Configure,
   RefinementList,
-  Hits,
 } from 'react-instantsearch-dom';
 import 'instantsearch.css/themes/reset.css';
 import 'instantsearch.css/themes/algolia.css';
 import 'tailwindcss/tailwind.css';
-import CustomSearchBox from './SearchBox';
-import CustomHits from './Hits';
+import CustomSearchBox from '../components/SearchBox';
+import CustomHits from '../components/Hits';
 const searchClient = algoliasearch(
   'SWSFY6ZO07',
   '286c1017af1002e899ded37866d02198'
