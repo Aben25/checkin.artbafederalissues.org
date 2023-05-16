@@ -1,8 +1,15 @@
 import { useState } from "react";
 import { Hits } from "react-instantsearch-dom";
 import Link from "next/link";
-
+import axios from "axios";
+import algoliasearch from "algoliasearch";
+import { useRouter } from "next/router";
+import { searchClient } from "../pages";
+import { RefreshContext } from "../contexts/RefreshContext";
+import { useContext } from "react";
 const Hit = ({ hit }) => {
+  
+
   const [showPopup, setShowPopup] = useState(false);
 
   const handleCheckIn = () => {
@@ -22,11 +29,49 @@ const Hit = ({ hit }) => {
     );
 
     if (response.ok) {
+      // Get attendees from API
+      const response = await axios.get(
+        "https://connect.artba.org/api/attendees?eventId=063a7434-1383-4a6c-88a5-62dd020c669b",
+        {
+          headers: {
+            Authorization: "Basic d2SuLwamTRQfEWqAuwBQ4zSTiSlq34mrICTaMeAIPS4=",
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        // Filter out cancelled and already checked-in attendees
+        const attendees = response.data.filter(
+          (attendee) => !attendee.Cancelled && !attendee.Attended
+        );
+
+        // Prepare objects for Algolia
+        const objects = attendees.map((attendee) => ({
+          ...attendee,
+          objectID: attendee.AttendeeUniqueID,
+        }));
+
+        // Send to Algolia
+        const client = algoliasearch(
+          "SWSFY6ZO07",
+          "aa4c486c6b3fc4123acd537108bb8096"
+        );
+        const index = client.initIndex("FIP2023");
+        index.replaceAllObjects(objects);
+        
+
+      }
+//Hard refresh page
+      
+
       alert("Successfully checked in.");
     } else {
       alert("Error checking in. Please try again.");
     }
     setShowPopup(false);
+
+    //refresh page
+
   };
 
   const handleCancel = () => {
@@ -36,7 +81,7 @@ const Hit = ({ hit }) => {
   const productURL = `/attendee?AttendeeUniqueID=${hit.AttendeeUniqueID}&FullName=${hit.FullName}&CompanyName=${hit.CompanyName}&Attended=${hit.Attended}&Email=${hit.Email}`;
 
   return (
-    <>
+    <div >
       <div className="max-w-sm rounded overflow-hidden shadow-lg mb-4">
         <div className="px-6 py-4">
           <div className="font-bold text-xl mb-2">{hit.FullName}</div>
@@ -103,14 +148,14 @@ const Hit = ({ hit }) => {
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 };
 
 const CustomHits = () => {
   return (
     <div className="hit">
-      <Hits hitComponent={Hit} />  
+      <Hits hitComponent={Hit} />
     </div>
   );
 };
