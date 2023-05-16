@@ -42,7 +42,7 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-gray-100 py-12 px-4 sm:px-6 lg:px-8 mb-0">
       <Head>
-        <title>Registration Check-In</title>
+        <title>Registration Check-In 2023</title>
         <link rel="shortcut icon" href="/favicon.ico" />
         <link
           rel="stylesheet"
