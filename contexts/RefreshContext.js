@@ -8,7 +8,7 @@ export const RefreshContext = React.createContext();
 
 export const RefreshProvider = ({children}) => {
   const [refreshKey, setRefreshKey] = React.useState(0);
-  const [font, setFontFace] = useState(25);
+  const [tims_, setFontFace] = useState(25);
 
   
   const searchClient = algoliasearch(
@@ -21,7 +21,7 @@ export const RefreshProvider = ({children}) => {
   };
 
   return (
-    <RefreshContext.Provider value={{ refreshKey, triggerParentUpdate, searchClient,font, setFontFace }}>
+    <RefreshContext.Provider value={{ refreshKey, triggerParentUpdate, searchClient,tims_, setFontFace }}>
       {children}
     </RefreshContext.Provider>
   );

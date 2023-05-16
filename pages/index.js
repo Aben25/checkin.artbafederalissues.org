@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import algoliasearch from "algoliasearch/lite";
@@ -28,7 +28,7 @@ const Results = connectStateResults(
 );
 
 export default function Home() {
-  const { font ,setFontFace ,searchClient} = useContext(RefreshContext);
+  const { tims_ ,setFontFace ,searchClient} = useContext(RefreshContext);
 
   const refinementListClasses = {
     root: "my-4",
@@ -77,12 +77,7 @@ export default function Home() {
                 <div className="">
                   <div>
                     <Results>
-                      <InfiniteHits
-                        hitComponent={CustomHits}
-                        translations={{
-                          loadMore: "Load more",
-                        }}
-                      />
+                    <CustomHits />
                     </Results>
                   </div>
                 </div>
