@@ -66,6 +66,7 @@ const Hit = ({ hit }) => {
     } else {
       alert("Error checking in. Please try again.");
     }
+    //push to confirmation page
     setShowPopup(false);
     router.push("/confirmation");
 
