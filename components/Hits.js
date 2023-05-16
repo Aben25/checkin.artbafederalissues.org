@@ -6,9 +6,11 @@ import algoliasearch from "algoliasearch";
 import { useRouter } from "next/router";
 import { RefreshContext } from "/contexts/RefreshContext";
 import { useContext } from "react";
+
+import router from "next/router";
+
 const Hit = ({ hit }) => {
-  
-  const { searchClient, triggerParentUpdate } = useContext(RefreshContext);
+  const { tims_, searchClient, setFontFace } = useContext(RefreshContext);
 
   const [showPopup, setShowPopup] = useState(false);
 
@@ -58,19 +60,14 @@ const Hit = ({ hit }) => {
         );
         const index = client.initIndex("FIP2023");
         index.replaceAllObjects(objects);
-        
-
       }
-// Trigger an update in parent components
-triggerParentUpdate();      
 
       alert("Successfully checked in.");
     } else {
       alert("Error checking in. Please try again.");
     }
     setShowPopup(false);
-
-    //refresh page
+    router.push("/confirmation");
 
   };
 
@@ -81,7 +78,7 @@ triggerParentUpdate();
   const productURL = `/attendee?AttendeeUniqueID=${hit.AttendeeUniqueID}&FullName=${hit.FullName}&CompanyName=${hit.CompanyName}&Attended=${hit.Attended}&Email=${hit.Email}`;
 
   return (
-    <div >
+    <div>
       <div className="max-w-sm rounded overflow-hidden shadow-lg mb-4">
         <div className="px-6 py-4">
           <div className="font-bold text-xl mb-2">{hit.FullName}</div>
