@@ -1,11 +1,15 @@
 // contexts/RefreshContext.js
 import React from 'react';
 import algoliasearch from "algoliasearch";
+import { useState } from "react";
+
 
 export const RefreshContext = React.createContext();
 
 export const RefreshProvider = ({children}) => {
   const [refreshKey, setRefreshKey] = React.useState(0);
+  const [font, setFontFace] = useState(25);
+
   
   const searchClient = algoliasearch(
     "SWSFY6ZO07",
@@ -17,7 +21,7 @@ export const RefreshProvider = ({children}) => {
   };
 
   return (
-    <RefreshContext.Provider value={{ refreshKey, triggerParentUpdate, searchClient }}>
+    <RefreshContext.Provider value={{ refreshKey, triggerParentUpdate, searchClient,font, setFontFace }}>
       {children}
     </RefreshContext.Provider>
   );

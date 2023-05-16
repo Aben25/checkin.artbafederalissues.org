@@ -4,11 +4,11 @@ import Link from "next/link";
 import axios from "axios";
 import algoliasearch from "algoliasearch";
 import { useRouter } from "next/router";
-import { searchClient } from "../pages";
-import { RefreshContext } from "../contexts/RefreshContext";
+import { RefreshContext } from "/contexts/RefreshContext";
 import { useContext } from "react";
 const Hit = ({ hit }) => {
   
+  const { searchClient, triggerParentUpdate } = useContext(RefreshContext);
 
   const [showPopup, setShowPopup] = useState(false);
 
@@ -61,8 +61,8 @@ const Hit = ({ hit }) => {
         
 
       }
-//Hard refresh page
-      
+// Trigger an update in parent components
+triggerParentUpdate();      
 
       alert("Successfully checked in.");
     } else {

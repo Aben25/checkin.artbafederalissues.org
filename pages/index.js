@@ -13,11 +13,9 @@ import "instantsearch.css/themes/reset.css";
 import "tailwindcss/tailwind.css";
 import CustomSearchBox from "../components/SearchBox";
 import CustomHits from "../components/Hits";
+import { RefreshContext } from "../contexts/RefreshContext";
+import { useContext } from "react";
 
-const searchClient = algoliasearch(
-  "SWSFY6ZO07",
-  "286c1017af1002e899ded37866d02198"
-);
 
 const Results = connectStateResults(
   ({ searchState, searchResults, children }) => {
@@ -30,7 +28,7 @@ const Results = connectStateResults(
 );
 
 export default function Home() {
-  const router = useRouter();
+  const { font ,setFontFace ,searchClient} = useContext(RefreshContext);
 
   const refinementListClasses = {
     root: "my-4",

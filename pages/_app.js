@@ -2,6 +2,7 @@ import "../global.css";
 import "../styles/tailwind.css";
 import Head from "next/head";
 import Script from "next/script";
+import { RefreshProvider } from "../contexts/RefreshContext";
 
 export default function MyApp({ Component, pageProps }) {
   return (
@@ -28,8 +29,11 @@ export default function MyApp({ Component, pageProps }) {
       </Head>
       {/* Add the favicon */}
       {/* Note that the path doesn't include "public" */}
+      <RefreshProvider>
 
       <Component {...pageProps} />
+      </RefreshProvider>
+
     </>
   );
 }
