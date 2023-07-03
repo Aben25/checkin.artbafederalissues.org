@@ -58,7 +58,7 @@ export default function Home() {
             </div>
             <div class="col-span-2">
               <h1 className="text-4xl font-extrabold text-gray-900">
-                Registration Check-In
+                Event Registration Check-In 
               </h1>
             </div>
           </div>
