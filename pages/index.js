@@ -64,7 +64,7 @@ export default function Home() {
           </div>
 
           <div className="mt-12">
-            <InstantSearch searchClient={searchClient} indexName="FIP2023">
+            <InstantSearch searchClient={searchClient} indexName="P3s">
               <CustomSearchBox />
               <div className="grid lg:grid-cols-3 gap-4">
                 <div className="hidden sm:hidden md:block lg:col-span-0">
