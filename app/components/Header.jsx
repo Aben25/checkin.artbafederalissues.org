@@ -8,11 +8,11 @@ import logo from "@/public/shs";
 
 export default function Header({ events, selectedEvent, handleEventChange }) {
   return (
-    <header className="bg-blue-700 px-6 py-4 text-white flex justify-between items-center mb-8">
+    <header className="bg-blue-900 px-6 py-4 text-white flex justify-between items-center mb-8">
       <div className="flex items-center">
       <Image
       src='https://economics.artba.org/img/artba-logo-white.png'
-      width={150}
+      width={250}
         height={200}
       alt="Picture of the author"
     />

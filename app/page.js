@@ -11,7 +11,6 @@ import {
 import Header from "./components/Header";
 import { Fragment } from "react";
 
-
 // Initialize react-toastify
 
 async function fetchEventData() {
@@ -83,7 +82,6 @@ export default function Page() {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedAttendee, setSelectedAttendee] = useState(null);
   const [response, setResponse] = useState(null);
-  const notify = () => toast("Wow so easy!");
 
   useEffect(() => {
     fetchEventData().then(setData).catch(console.error);
@@ -179,7 +177,6 @@ export default function Page() {
         field?.toLowerCase().includes(searchTerm.toLowerCase())
       )
   );
-
   return (
     <Fragment>
       <Header 
@@ -189,7 +186,7 @@ export default function Page() {
       />
       <main>
         <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-          <h2 className="font-bold text-xl mb-2">Event Attendees</h2>
+          <h2 className="font-bold text-xl mb-2">Event Attendees {attendees? attendees.length:"..."} </h2>
           <SearchField searchTerm={searchTerm} handleSearchChange={handleSearchChange} />
           <AttendeesList attendees={filteredAttendees} handleAttendeeClick={handleAttendeeClick} />
           <AttendeeModal
