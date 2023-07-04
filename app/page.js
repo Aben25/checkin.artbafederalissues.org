@@ -1,11 +1,17 @@
 "use client";
-import { Dialog, Transition, Listbox } from "@headlessui/react";
-import { Fragment, useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Attendee from './Attendee';
-import EventSelector from './EventSelector';
+import {
+  AttendeeModal,
+  AttendeesList,
+  EventSelector,
+  SearchField
+} from "./components";
+import Header from "./components/Header";
+import { Fragment } from "react";
+
+
 // Initialize react-toastify
 
 async function fetchEventData() {
@@ -92,6 +98,14 @@ export default function Page() {
         .then(setAttendees)
         .catch(console.error);
     }
+    else {
+      // Clear the attendees list
+      setAttendees([]);
+      // Clear the selected event
+      setSelectedEvent(null);
+      // Clear the selected attendee
+      setSelectedAttendee(null);
+    }
   }, []);
 
   const handleEventChange = async (selected) => {
@@ -119,6 +133,7 @@ export default function Page() {
   };
 
   const handleAttendeeClick = (attendee) => {
+    console.log('handleAttendeeClick triggered', attendee);
     setSelectedAttendee(attendee);
     setModalOpen(true);
   };
@@ -136,12 +151,12 @@ export default function Page() {
           selectedEvent.EventUniqueId
         );
         setAttendees(attendeesData);
-  
+
         // Show a toast notification
         toast.success("Attendee checked in successfully");
         // Clear the search term
         setSearchTerm("");
-  
+
         // Close the modal right away
         handleCloseModal();
       }
@@ -166,123 +181,26 @@ export default function Page() {
   );
 
   return (
-    <main>
-      <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-        <Listbox value={selectedEvent} onChange={handleEventChange}>
-          <Listbox.Button>{selectedEvent?.Name}</Listbox.Button>
-          <Listbox.Options>
-            {data.map((item, index) => (
-              <Listbox.Option key={index} value={item}>
-                {item.Name}
-              </Listbox.Option>
-            ))}
-          </Listbox.Options>
-        </Listbox>
-
-        <h2>Attendees:</h2>
-        {loading ? (
-          <motion.div
-            animate={{ scale: [1, 1.2, 1] }}
-            transition={{ duration: 0.5, repeat: Infinity }}
-          >
-            Loading...
-          </motion.div>
-        ) : (
-          <>
-         <input
-  type="search"
-  placeholder="Search attendees"
-  value={searchTerm}
-  onChange={handleSearchChange}
-/>
-            {filteredAttendees.map((attendee, index) => (
-              <div
-                key={index}
-                className="max-w-sm rounded overflow-hidden shadow-lg cursor-pointer"
-                onClick={() => handleAttendeeClick(attendee)}
-              >
-                <div className="px-6 py-4">
-                  <div className="font-bold text-xl mb-2">{attendee.Email}</div>
-                  <p className="text-gray-700 text-base">
-                    {attendee.FirstName} {attendee.LastName}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </>
-        )}
-      </div>
-
-      <Transition appear show={modalOpen} as={Fragment}>
-        <Dialog
-          as="div"
-          className="fixed inset-0 z-10 overflow-y-auto"
-          onClose={handleCloseModal}
-        >
-          <div className="min-h-screen px-4 text-center">
-            <Dialog.Overlay className="fixed inset-0 bg-black opacity-30" />
-
-            <span
-              className="inline-block h-screen align-middle"
-              aria-hidden="true"
-            >
-              &#8203;
-            </span>
-
-            <Transition.Child
-              as={Fragment}
-              enter="ease-out duration-300"
-              enterFrom="opacity-0 scale-95"
-              enterTo="opacity-100 scale-100"
-              leave="ease-in duration-200"
-              leaveFrom="opacity-100 scale-100"
-              leaveTo="opacity-0 scale-95"
-            >
-              <div className="inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
-                <Dialog.Title
-                  as="h3"
-                  className="text-lg font-medium leading-6 text-gray-900"
-                >
-                  Attendee Details
-                </Dialog.Title>
-                <div className="mt-2">
-                  <p className="text-sm text-gray-500">
-                    Name: {selectedAttendee?.FirstName}{" "}
-                    {selectedAttendee?.LastName}
-                  </p>
-                  <p className="text-sm text-gray-500">
-                    Email: {selectedAttendee?.Email}
-                  </p>
-                </div>
-
-                {/* Display the response */}
-                {response && (
-                  <div className="mt-4 text-sm text-gray-500">{response}</div>
-                )}
-
-                <div className="mt-4">
-                  <button
-                    type="button"
-                    className="inline-flex justify-center px-4 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
-                    onClick={handleCheckIn}
-                  >
-                    Check In
-                  </button>
-                  <button
-                    type="button"
-                    className="inline-flex justify-center px-4 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
-                    onClick={handleCloseModal}
-                  >
-                    Close
-                  </button>
-                </div>
-              </div>
-            </Transition.Child>
-          </div>
-        </Dialog>
-      </Transition>
-              <ToastContainer />
-
-    </main>
+    <Fragment>
+      <Header 
+        events={data}
+        selectedEvent={selectedEvent}
+        handleEventChange={handleEventChange}
+      />
+      <main>
+        <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+          <h2 className="font-bold text-xl mb-2">Event Attendees</h2>
+          <SearchField searchTerm={searchTerm} handleSearchChange={handleSearchChange} />
+          <AttendeesList attendees={filteredAttendees} handleAttendeeClick={handleAttendeeClick} />
+          <AttendeeModal
+            modalOpen={modalOpen}
+            handleCloseModal={handleCloseModal}
+            selectedAttendee={selectedAttendee}
+            handleCheckIn={handleCheckIn}
+          />
+        </div>
+      </main>
+      <ToastContainer />
+    </Fragment>
   );
 }
