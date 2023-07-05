@@ -4,7 +4,7 @@ import { AgendaModal } from "./AgendaModal";
 
 export default function AttendeeModal({ modalOpen, handleCloseModal, selectedAttendee, handleCheckIn, selectedEvent }) {
   const [isLoading, setIsLoading] = useState(false);
-  const [isAgendaModalOpen, setAgendaModalOpen] = useState(true);
+  const [isAgendaModalOpen, setAgendaModalOpen] = useState(false);
 
 
   const handleClick = async () => {
