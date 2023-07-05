@@ -186,7 +186,7 @@ export default function Page() {
       />
       <main>
         <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-          <h2 className="font-bold text-xl mb-2">Event Attendees {attendees? attendees.length:"..."} </h2>
+          <h2 className="font-bold text-xl mb-2">{selectedEvent?selectedEvent.Name:"..."} Attendees  </h2>
           <SearchField searchTerm={searchTerm} handleSearchChange={handleSearchChange} />
           <AttendeesList attendees={filteredAttendees} handleAttendeeClick={handleAttendeeClick} />
           <AttendeeModal

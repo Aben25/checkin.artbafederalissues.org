@@ -1,5 +1,6 @@
 import { Listbox } from "@headlessui/react";
 import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/24/solid";
+
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
@@ -36,7 +37,7 @@ export default function EventSelector({ events, selectedEvent, handleEventChange
                     <span
                       className={classNames(
                         selected ? 'font-semibold' : 'font-normal',
-                        'block truncate',
+                        'block',
                       )}
                     >
                       {item.Name}
