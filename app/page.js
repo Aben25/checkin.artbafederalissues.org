@@ -82,29 +82,47 @@ export default function Page() {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedAttendee, setSelectedAttendee] = useState(null);
   const [response, setResponse] = useState(null);
+  const [qrlink, setQrlink] = useState(null);
 
   useEffect(() => {
-    fetchEventData().then(setData).catch(console.error);
+    const fetchAndUpdateEvents = async () => {
+      try {
+        const data = await fetchEventData();
+        setData(data);
 
-    // Check if there is any selected event stored in the localStorage
-    const storedEvent = localStorage.getItem("selectedEvent");
-    if (storedEvent) {
-      const parsedEvent = JSON.parse(storedEvent);
-      setSelectedEvent(parsedEvent);
-      // Fetch the attendees for the selected event
-      fetchEventAttendees(parsedEvent.EventUniqueId)
-        .then(setAttendees)
-        .catch(console.error);
-    }
-    else {
-      // Clear the attendees list
-      setAttendees([]);
-      // Clear the selected event
-      setSelectedEvent(null);
-      // Clear the selected attendee
-      setSelectedAttendee(null);
-    }
+        // Get selected event from local storage
+        const storedEvent = localStorage.getItem("selectedEvent");
+        if (storedEvent) {
+          const parsedEvent = JSON.parse(storedEvent);
+
+          // Find this event in the newly fetched data
+          const updatedEvent = data.find(event => event.EventUniqueId === parsedEvent.EventUniqueId);
+          if (updatedEvent) {
+            // If found, update local storage and state
+            setSelectedEvent(updatedEvent);
+            setQrlink(updatedEvent.Summary);
+            localStorage.setItem("selectedEvent", JSON.stringify(updatedEvent));
+
+            const attendeesData = await fetchEventAttendees(updatedEvent.EventUniqueId);
+            setAttendees(attendeesData);
+            localStorage.setItem("attendees", JSON.stringify(attendeesData));
+          } else {
+            // If not found, clear local storage and state
+            setAttendees([]);
+            setSelectedEvent(null);
+            setQrlink(null);
+            localStorage.removeItem("selectedEvent");
+            localStorage.removeItem("attendees");
+          }
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchAndUpdateEvents();
   }, []);
+
 
   const handleEventChange = async (selected) => {
     setLoading(true);
@@ -164,6 +182,19 @@ export default function Page() {
     }
   };
 
+  const handleRefresh = async () => {
+    setLoading(true);
+    if (selectedEvent) {
+      const attendeesData = await fetchEventAttendees(selectedEvent.EventUniqueId);
+      setAttendees(attendeesData);
+      setQrlink(selectedEvent.Summary); // Set qrlink
+
+      localStorage.setItem("attendees", JSON.stringify(attendeesData));
+    }
+    setLoading(false);
+  };
+
+
   const handleCloseModal = () => {
     setModalOpen(false);
     // Clear the response state variable
@@ -179,14 +210,14 @@ export default function Page() {
   );
   return (
     <Fragment>
-      <Header 
+      <Header
         events={data}
         selectedEvent={selectedEvent}
         handleEventChange={handleEventChange}
       />
       <main>
         <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-          <h2 className="font-bold text-xl mb-2">{selectedEvent?selectedEvent.Name:"..."} Attendees  </h2>
+          <h2 className="font-bold text-xl mb-2">{selectedEvent ? selectedEvent.Name : "..."} Attendees  </h2>
           <SearchField searchTerm={searchTerm} handleSearchChange={handleSearchChange} />
           <AttendeesList attendees={filteredAttendees} handleAttendeeClick={handleAttendeeClick} />
           <AttendeeModal
@@ -194,6 +225,7 @@ export default function Page() {
             handleCloseModal={handleCloseModal}
             selectedAttendee={selectedAttendee}
             handleCheckIn={handleCheckIn}
+            selectedEvent={selectedEvent}
           />
         </div>
       </main>
