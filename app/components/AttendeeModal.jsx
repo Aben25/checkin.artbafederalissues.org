@@ -11,7 +11,7 @@ export default function AttendeeModal({ modalOpen, handleCloseModal, selectedAtt
     setIsLoading(true);
     await handleCheckIn();
     setIsLoading(false);
-    setAgendaModalOpen(true);
+    selectedEvent.Summary? setAgendaModalOpen(true): setAgendaModalOpen(false);
   };
 
   const handleCloseAgendaModal = () => {
