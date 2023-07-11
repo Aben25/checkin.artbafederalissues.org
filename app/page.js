@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import React, { useMemo } from 'react';
 import {
   AttendeeModal,
   AttendeesList,
@@ -10,10 +11,22 @@ import {
 } from "./components";
 import Header from "./components/Header";
 import { Fragment } from "react";
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table"
+import { MaterialReactTable } from 'material-react-table';
 
 // Initialize react-toastify
 
 async function fetchEventData() {
+
+
   const today = new Date().toISOString().split("T")[0]; // Get current date
   const url = `https://connect.artba.org/api/events?eventDate=${today}`;
   const headers = {
@@ -74,6 +87,30 @@ const markAttendeeAsAttended = async (AttendeeUniqueID) => {
 };
 
 export default function Page() {
+
+  const columns = useMemo(
+    () => [
+      {
+        accessorKey: 'name', //simple recommended way to define a column
+        header: 'Name',
+        muiTableHeadCellProps: { sx: { color: 'green' } }, //custom props
+      },
+      {
+        accessorFn: (originalRow) => originalRow.email, //alternate way
+        id: 'Email', //id required if you use accessorFn instead of accessorKey
+        header: 'Eamil',
+        Header: <i style={{ color: 'red' }}>Email</i>, //optional custom markup
+      },
+      {
+        id : 'attendeeded',
+        accessorKey: 'attendeeded',
+        header: 'Attended',
+        muiTableHeadCellProps: { sx: { color: 'green' } }, //custom props
+      }
+    ],
+    [],
+  );
+
   const [data, setData] = useState([]);
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [attendees, setAttendees] = useState([]);
@@ -201,13 +238,11 @@ export default function Page() {
     setResponse(null);
   };
 
-  const filteredAttendees = attendees.filter(
-    (attendee) =>
-      !attendee.Attended &&
-      [attendee.FirstName, attendee.LastName, attendee.Email].some((field) =>
-        field?.toLowerCase().includes(searchTerm.toLowerCase())
-      )
-  );
+
+
+  // ... other code ...
+ 
+
   return (
     <Fragment>
       <Header
@@ -217,15 +252,23 @@ export default function Page() {
       />
       <main>
         <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-          <h2 className="font-bold text-xl mb-2">{selectedEvent ? selectedEvent.Name : "..."} Attendees  </h2>
-          <SearchField searchTerm={searchTerm} handleSearchChange={handleSearchChange} />
-          <AttendeesList attendees={filteredAttendees} handleAttendeeClick={handleAttendeeClick} />
-          <AttendeeModal
-            modalOpen={modalOpen}
-            handleCloseModal={handleCloseModal}
-            selectedAttendee={selectedAttendee}
-            handleCheckIn={handleCheckIn}
-            selectedEvent={selectedEvent}
+          <h2 className="font-bold text-xl mb-2">
+            {selectedEvent ? selectedEvent.Name : "..."} Attendees
+          </h2>
+          <MaterialReactTable
+            columns={columns}
+            data={ attendees.
+              map((attendee) => {
+                return {
+                  name: attendee.FirstName + " " + attendee.LastName,
+                  email: attendee.Email,
+                  attendeeded: attendee.Attended ? "Yes" : "No"
+                };
+              })}
+            enableRowSelection
+            enableColumnOrdering
+            enableGlobalFilter={true}
+            enableColumnFilter={true}
           />
         </div>
       </main>
