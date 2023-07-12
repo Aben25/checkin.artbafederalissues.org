@@ -10,6 +10,7 @@ import {
 } from "./components";
 import Header from "./components/Header";
 import { Fragment } from "react";
+import { Skeleton } from "@/components/ui/skeleton"
 
 // Initialize react-toastify
 
@@ -216,17 +217,32 @@ export default function Page() {
         handleEventChange={handleEventChange}
       />
       <main>
-        <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8 sm:m-5">
           <h2 className="font-bold text-xl mb-2">{selectedEvent ? selectedEvent.Name : "..."} Attendees  </h2>
           <SearchField searchTerm={searchTerm} handleSearchChange={handleSearchChange} />
-          <AttendeesList attendees={filteredAttendees} handleAttendeeClick={handleAttendeeClick} />
-          <AttendeeModal
-            modalOpen={modalOpen}
-            handleCloseModal={handleCloseModal}
-            selectedAttendee={selectedAttendee}
-            handleCheckIn={handleCheckIn}
-            selectedEvent={selectedEvent}
-          />
+
+          {loading ? (
+            <>
+            <Skeleton className="w-[100%] h-[50px] rounded-full mt-2" />
+            <Skeleton className="w-[100%] h-[50px] rounded-full mt-2" />
+            <Skeleton className="w-[100%] h-[50px] rounded-full mt-2" />
+            <Skeleton className="w-[100%] h-[50px] rounded-full mt-2" />
+            <Skeleton className="w-[100%] h-[50px] rounded-full mt-2" />
+            <Skeleton className="w-[100%] h-[50px] rounded-full mt-2" />
+            </>
+                        
+          ) : (
+            <>
+              <AttendeesList attendees={filteredAttendees} handleAttendeeClick={handleAttendeeClick} />
+              <AttendeeModal
+                modalOpen={modalOpen}
+                handleCloseModal={handleCloseModal}
+                selectedAttendee={selectedAttendee}
+                handleCheckIn={handleCheckIn}
+                selectedEvent={selectedEvent}
+              />
+            </>
+          )}
         </div>
       </main>
       <ToastContainer />
