@@ -21,6 +21,10 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { MaterialReactTable } from 'material-react-table';
+import Metrix from "./components/Metrix";
+import { ExportToCsv } from 'export-to-csv'; //or use your library of choice here
+import { Box, Button } from '@mui/material';
+import FileDownloadIcon from '@mui/icons-material/FileDownload';
 
 // Initialize react-toastify
 
@@ -102,7 +106,7 @@ export default function Page() {
         Header: <i style={{ color: 'red' }}>Email</i>, //optional custom markup
       },
       {
-        id : 'attendeeded',
+        id: 'attendeeded',
         accessorKey: 'attendeeded',
         header: 'Attended',
         muiTableHeadCellProps: { sx: { color: 'green' } }, //custom props
@@ -241,7 +245,28 @@ export default function Page() {
 
 
   // ... other code ...
- 
+
+  const csvExporter = new ExportToCsv({
+    filename: 'Attendees',
+    fieldSeparator: ',',
+    quoteStrings: '"',
+    decimalSeparator: '.',
+    showLabels: true,
+    showTitle: true,
+    title: selectedEvent ? selectedEvent.Name : "...",
+    useTextFile: false,
+    useBom: true,
+    useKeysAsHeaders: true,
+    headers: ['Name', 'Email', 'Attended'],
+    // headers: ["Column 1", "Column 2", etc...] <-- Won't work with useKeysAsHeaders present!
+  });
+
+  const handleExportData = () => {
+    csvExporter.generateCsv(attendees);
+  }
+
+
+
 
   return (
     <Fragment>
@@ -251,13 +276,22 @@ export default function Page() {
         handleEventChange={handleEventChange}
       />
       <main>
-        <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+
+        <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-0">
           <h2 className="font-bold text-xl mb-2">
             {selectedEvent ? selectedEvent.Name : "..."} Attendees
           </h2>
+
+          <Metrix
+            selectedEvent={selectedEvent}
+            attendees={attendees}
+
+          />
+
+
           <MaterialReactTable
             columns={columns}
-            data={ attendees.
+            data={attendees.
               map((attendee) => {
                 return {
                   name: attendee.FirstName + " " + attendee.LastName,
@@ -269,7 +303,56 @@ export default function Page() {
             enableColumnOrdering
             enableGlobalFilter={true}
             enableColumnFilter={true}
+            enableRowSelection
+            positionToolbarAlertBanner="bottom"
+            renderTopToolbarCustomActions={({ table }) => (
+              <Box
+                sx={{ display: 'flex', gap: '1rem', p: '0.5rem', flexWrap: 'wrap' }}
+              >
+                <Button
+                  color="success"
+                  //export all data that is currently in the table (ignore pagination, sorting, filtering, etc.)
+                  onClick={handleExportData}
+                  startIcon={<FileDownloadIcon />}
+                  variant="contained"
+                >
+                  Export All Data
+                </Button>
+                <Button
+                  disabled={table.getPrePaginationRowModel().rows.length === 0}
+                  //export all rows, including from the next page, (still respects filtering and sorting)
+                  onClick={() =>
+                    handleExportRows(table.getPrePaginationRowModel().rows)
+                  }
+                  startIcon={<FileDownloadIcon />}
+                  variant="contained"
+                >
+                  Export All Rows
+                </Button>
+                <Button
+                  disabled={table.getRowModel().rows.length === 0}
+                  //export all rows as seen on the screen (respects pagination, sorting, filtering, etc.)
+                  onClick={() => handleExportRows(table.getRowModel().rows)}
+                  startIcon={<FileDownloadIcon />}
+                  variant="contained"
+                >
+                  Export Page Rows
+                </Button>
+                <Button
+                  disabled={
+                    !table.getIsSomeRowsSelected() && !table.getIsAllRowsSelected()
+                  }
+                  //only export selected rows
+                  onClick={() => handleExportRows(table.getSelectedRowModel().rows)}
+                  startIcon={<FileDownloadIcon />}
+                  variant="contained"
+                >
+                  Export Selected Rows
+                </Button>
+              </Box>
+            )}
           />
+
         </div>
       </main>
       <ToastContainer />
