@@ -309,8 +309,9 @@ export default function Page() {
                 sx={{ display: 'flex', gap: '1rem', p: '0.5rem', flexWrap: 'wrap' }}
               >
                 <Button
-                  color="primary"
-                  //export all data that is currently in the table (ignore pagination, sorting, filtering, etc.)
+                  style={{
+                    backgroundColor: "black",
+                  }}                  //export all data that is currently in the table (ignore pagination, sorting, filtering, etc.)
                   onClick={handleExportData}
                   startIcon={<FileDownloadIcon />}
                   variant="contained"
@@ -318,6 +319,9 @@ export default function Page() {
                   Export All Data
                 </Button>
                 <Button
+                 style={{
+                  backgroundColor: "black",
+                }}    
                   disabled={table.getPrePaginationRowModel().rows.length === 0}
                   //export all rows, including from the next page, (still respects filtering and sorting)
                   onClick={() =>
@@ -329,6 +333,9 @@ export default function Page() {
                   Export All Rows
                 </Button>
                 <Button
+                 style={{
+                  backgroundColor: "black",
+                }}    
                   disabled={table.getRowModel().rows.length === 0}
                   //export all rows as seen on the screen (respects pagination, sorting, filtering, etc.)
                   onClick={() => handleExportRows(table.getRowModel().rows)}
@@ -338,6 +345,9 @@ export default function Page() {
                   Export Page Rows
                 </Button>
                 <Button
+                 style={{
+                  backgroundColor: "gray",
+                }}    
                   disabled={
                     !table.getIsSomeRowsSelected() && !table.getIsAllRowsSelected()
                   }
