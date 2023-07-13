@@ -303,14 +303,13 @@ export default function Page() {
             enableColumnOrdering
             enableGlobalFilter={true}
             enableColumnFilter={true}
-            enableRowSelection
             positionToolbarAlertBanner="bottom"
             renderTopToolbarCustomActions={({ table }) => (
               <Box
                 sx={{ display: 'flex', gap: '1rem', p: '0.5rem', flexWrap: 'wrap' }}
               >
                 <Button
-                  color="success"
+                  color="primary"
                   //export all data that is currently in the table (ignore pagination, sorting, filtering, etc.)
                   onClick={handleExportData}
                   startIcon={<FileDownloadIcon />}
